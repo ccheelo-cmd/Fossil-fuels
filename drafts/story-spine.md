@@ -34,6 +34,16 @@
 
 ---
 
+## 🎯 SELECTED Big Idea (Choolwe's pick — C blended with B)
+
+> **"Africa caused 3% of climate change but pays the highest price — and pure clean-energy already failed us in last year's drought. The honest path forward is a managed transition, not abandonment."**
+
+This blends the justice asymmetry of C (3% emissions, disproportionate harm) with the lived Zambian lesson of B (hydropower-only grid collapsed under drought). The closing clause is the resolution — same shape as Option A's "managed transition, not abandonment."
+
+**Accent colour:** Confident blue `#1F4E79`. Grey neutrals around it (`#4B5563` for primary text, `#9CA3AF` for de-emphasized, `#E5E7EB` for subtle gridlines).
+
+---
+
 ## The 3-Minute Story (Situation → Complication → Resolution)
 
 Built around **Option A**. This is the elevator pitch — if I lost my slides, this is what I'd say.
