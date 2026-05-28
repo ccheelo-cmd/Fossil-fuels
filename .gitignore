@@ -1,0 +1,12 @@
+# PowerPoint / Office lock files (created when a file is open in Office)
+~$*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# OS junk
+.DS_Store
+Thumbs.db
