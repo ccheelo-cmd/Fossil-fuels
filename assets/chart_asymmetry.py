@@ -1,41 +1,63 @@
-"""Slide 5 chart — Africa's share of population vs share of cumulative emissions.
+"""Slide 5 — two-row isotype showing 17% vs 3%.
 
-Action title (on slide): "Africa hosts 17% of the world's people, caused under
-3% of cumulative emissions — and is being asked to skip the energy ladder every
-wealthy country climbed."
+Row 1: 100 person icons. 17 amber (Africa population).
+Row 2: 100 person icons. 3 amber (Africa cumulative CO2 emissions).
 
-Sources:
-- Population: UN World Population Prospects (~17% of global population, 2024)
-- Cumulative CO2 emissions since 1750: Our World in Data / Energy for Growth Hub
-  Africa <3%; Sub-Saharan Africa ~0.55%
-  https://energyforgrowth.org/article/sub-saharan-africa-emits-a-tiny-fraction-of-the-worlds-co2/
+The visual shock: the amber stripe is dramatically shorter in row 2.
+
+Sources: UN World Population Prospects; Our World in Data / Energy for Growth Hub.
 """
 import matplotlib.pyplot as plt
-from palette import ACCENT, GREY_CTX, TEXT, TEXT_MUTED, apply_style
+import matplotlib.patches as patches
+from palette import AMBER, GREY_SOFT, TEXT, TEXT_MUTED, apply_style
 
 apply_style(plt)
 
-labels = ["Share of global\npopulation", "Share of cumulative\nCO₂ emissions"]
-values = [17, 3]
-colors = [GREY_CTX, ACCENT]
 
-fig, ax = plt.subplots(figsize=(8, 4.5))
-bars = ax.bar(labels, values, color=colors, width=0.55)
-ax.set_ylim(0, 22)
-ax.set_yticks([])
-ax.tick_params(axis="x", length=0, labelsize=12)
-for spine in ax.spines.values():
-    spine.set_visible(False)
+def person(ax, cx, cy, color, h=0.7):
+    """A tiny stylised person icon: circle head + tapered body."""
+    # head
+    ax.add_patch(patches.Circle((cx, cy + h * 0.32), h * 0.13,
+                                color=color, zorder=3))
+    # body — slim trapezoid
+    body = patches.FancyBboxPatch(
+        (cx - h * 0.16, cy - h * 0.30), h * 0.32, h * 0.55,
+        boxstyle="round,pad=0,rounding_size=0.06",
+        linewidth=0, facecolor=color, zorder=3,
+    )
+    ax.add_patch(body)
 
-for bar, v in zip(bars, values):
-    ax.text(bar.get_x() + bar.get_width() / 2, v + 0.6,
-            f"{v}%", ha="center", va="bottom",
-            color=TEXT, fontsize=18, fontweight="bold")
 
-ax.text(0.5, -0.18,
-        "Africa, % of global total  •  Sources: UN WPP, Our World in Data",
-        ha="center", transform=ax.transAxes,
-        color=TEXT_MUTED, fontsize=9)
+def draw_row(ax, y, n_total, n_highlight, gap=0.42):
+    for i in range(n_total):
+        cx = 0.4 + i * gap
+        color = AMBER if i < n_highlight else GREY_SOFT
+        person(ax, cx, y, color)
+
+
+fig, ax = plt.subplots(figsize=(13, 5.8))
+ax.set_xlim(-0.5, 43)
+ax.set_ylim(-1.8, 6)
+ax.set_aspect("equal")
+ax.axis("off")
+
+# Row 1 — population (17 of 100 amber)
+ax.text(-0.5, 4.3, "Share of global population",
+        fontsize=13, color=TEXT, fontweight="bold", ha="left")
+ax.text(43, 4.3, "17%",
+        fontsize=22, color=AMBER, fontweight="bold", ha="right")
+draw_row(ax, 3.3, 100, 17)
+
+# Row 2 — cumulative CO2 emissions (3 of 100 amber)
+ax.text(-0.5, 1.6, "Share of cumulative CO₂ emissions",
+        fontsize=13, color=TEXT, fontweight="bold", ha="left")
+ax.text(43, 1.6, "<3%",
+        fontsize=22, color=AMBER, fontweight="bold", ha="right")
+draw_row(ax, 0.6, 100, 3)
+
+ax.text(-0.5, -1.4, "Each figure represents 1% of the global total.  "
+                    "Africa, all data.",
+        fontsize=10, color=TEXT_MUTED, style="italic")
 
 plt.savefig("africa_asymmetry.png")
 print("wrote africa_asymmetry.png")

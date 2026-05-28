@@ -1,44 +1,58 @@
-"""Slide 4 chart — annual deaths from cooking-smoke vs context.
+"""Slide 4 — deaths waffle (isotype).
 
-Action title (lives on the slide, not the chart): "Cooking smoke from biomass
-kills ~3.2 million people every year — most in homes without clean fuel."
+Each dot = 100,000 deaths per year. 32 amber dots = 3.2M from household air
+pollution. 42 grey dots = 4.2M from outdoor air pollution (context).
+6 small dots = 600k malaria deaths.
 
-Sources:
-- Household air pollution: WHO Fact Sheet, ~3.2M/year
-  https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health
-- Ambient (outdoor) air pollution: WHO, ~4.2M/year
-- Malaria deaths: WHO World Malaria Report, ~600k/year (context for scale)
+The visual point: cooking smoke is on the same order as the things we DO
+talk about, but it gets none of the attention.
+
+Sources: WHO Household Air Pollution; WHO Ambient Air Pollution; WHO Malaria.
 """
 import matplotlib.pyplot as plt
-from palette import ACCENT, GREY_CTX, TEXT, TEXT_MUTED, apply_style
+import matplotlib.patches as patches
+from palette import AMBER, GREY_CTX, GREY_SOFT, TEXT, TEXT_MUTED, apply_style
 
 apply_style(plt)
 
-labels = [
-    "Outdoor air pollution",
-    "Household air pollution\n(cooking smoke)",
-    "Malaria",
-]
-values = [4.2, 3.2, 0.6]               # millions/year
-colors = [GREY_CTX, ACCENT, GREY_CTX]
 
-fig, ax = plt.subplots(figsize=(9, 4.5))
-bars = ax.barh(labels, values, color=colors, height=0.55)
-ax.invert_yaxis()
-ax.set_xlim(0, 5)
-ax.set_xticks([])
-ax.tick_params(axis="y", length=0)
-for spine in ax.spines.values():
-    spine.set_visible(False)
+def draw_dot_row(ax, x0, y, n, color, dot_r=0.18, gap=0.50):
+    """Draw n dots from (x0, y) to the right."""
+    for i in range(n):
+        cx = x0 + i * gap
+        ax.add_patch(patches.Circle((cx, y), dot_r, color=color, zorder=3))
 
-for bar, v in zip(bars, values):
-    ax.text(v + 0.08, bar.get_y() + bar.get_height() / 2,
-            f"{v:.1f}M", va="center", ha="left",
-            color=TEXT, fontsize=12, fontweight="bold")
 
-ax.text(0, -1.05, "Annual global deaths, millions  •  Sources: WHO",
-        transform=ax.get_yaxis_transform(),
-        color=TEXT_MUTED, fontsize=9)
+fig, ax = plt.subplots(figsize=(11, 5.2))
+ax.set_xlim(0, 22)
+ax.set_ylim(-0.5, 5.5)
+ax.set_aspect("equal")
+ax.axis("off")
+
+# Row 1: outdoor air pollution (4.2M = 42 dots), grey
+ax.text(0, 4.6, "Outdoor air pollution",
+        fontsize=12, color=TEXT_MUTED, ha="left", va="bottom")
+ax.text(22, 4.6, "4.2M",
+        fontsize=14, color=TEXT, ha="right", va="bottom", fontweight="bold")
+draw_dot_row(ax, 0.3, 4.1, 42, GREY_CTX)
+
+# Row 2: household air pollution (3.2M = 32 dots), AMBER — the point
+ax.text(0, 2.6, "Household air pollution  (cooking smoke)",
+        fontsize=12, color=TEXT, ha="left", va="bottom", fontweight="bold")
+ax.text(22, 2.6, "3.2M",
+        fontsize=14, color=AMBER, ha="right", va="bottom", fontweight="bold")
+draw_dot_row(ax, 0.3, 2.1, 32, AMBER)
+
+# Row 3: malaria (0.6M = 6 dots), grey-soft
+ax.text(0, 0.6, "Malaria",
+        fontsize=12, color=TEXT_MUTED, ha="left", va="bottom")
+ax.text(22, 0.6, "0.6M",
+        fontsize=14, color=TEXT, ha="right", va="bottom", fontweight="bold")
+draw_dot_row(ax, 0.3, 0.1, 6, GREY_SOFT)
+
+# Legend
+ax.text(0, -0.4, "Each dot = 100,000 lives per year",
+        fontsize=10, color=TEXT_MUTED, style="italic")
 
 plt.savefig("deaths_per_year.png")
 print("wrote deaths_per_year.png")

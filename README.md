@@ -4,7 +4,14 @@ A 5-minute follow-up presentation by **Choolwe** (Analytics in Training, Lusaka,
 
 > Steelman counter-argument to my earlier Power BI report *"How Climate Change Affects the World We Live In."* This deck does **not** deny climate change — it argues that abruptly cutting fossil fuels costs more lives today than climate change will tomorrow, and that the honest path is a **managed transition, not abandonment.**
 
-The final deliverable is [`deliverable/case-for-fossil-fuels.pptx`](deliverable/case-for-fossil-fuels.pptx). Everything else in this repo is the working that produced it — preserved on purpose for review.
+Two deliverables in [`deliverable/`](deliverable/):
+
+| File | What it is | How to view |
+|---|---|---|
+| [`case-for-fossil-fuels.pptx`](deliverable/case-for-fossil-fuels.pptx) | The presentation deck | Open in PowerPoint |
+| [`case-for-fossil-fuels.html`](deliverable/case-for-fossil-fuels.html) | Interactive web version with Plotly charts | Double-click → opens in any browser. Needs internet (Plotly is loaded from CDN). Arrow keys to navigate, **N** for speaker notes, **F** for fullscreen, **P** to print all slides. |
+
+Everything else in this repo is the working that produced them — preserved on purpose for review.
 
 ---
 
@@ -16,9 +23,11 @@ Built to *Storytelling with Data* (Cole Nussbaumer Knaflic) standards:
 - Single-sentence Big Idea on its own slide
 - SCR (Situation → Complication → Resolution) structure
 - Action-title sentences on every data slide (the takeaway, not the topic)
-- Pre-attentive attributes only — one accent colour (`#1F4E79` confident blue), grey for context
+- **Two-accent palette** used thematically: blue `#1F4E79` = the *path forward / resolution*; amber `#D97706` = the *cost / stakes*. Colour itself tells the story.
+- Isotype / waffle / donut charts instead of plain bars
 - No 3D, no gradients, no clip art, no chartjunk
 - Speaker notes on every slide, timed to ~4 min 20 sec total
+- Citations consolidated on a final **Sources** appendix slide rather than per-slide footers
 
 ---
 
@@ -50,18 +59,19 @@ case-for-fossil-fuels/
     └── case-for-fossil-fuels.pptx  ← the final 8-slide deck
 ```
 
-## Slide map (8 slides, ~4 min 20 sec budget)
+## Slide map (9 slides, ~4 min 20 sec budget)
 
-| # | Purpose | Title (action sentence) |
-|---|---|---|
-| 1 | Title | The Case For Fossil Fuels — follow-up to "How Climate Change Affects the World We Live In" |
-| 2 | Big Idea | *(the sentence on its own — Knaflic standard)* |
-| 3 | Situation | Last week's deck argued: fossil fuels drive climate change → therefore cut them. |
-| 4 | Complication 1 | Cooking smoke kills ~3.2M people every year — most where there's no clean fuel. |
-| 5 | Complication 2 | Africa = 17% of population, <3% of cumulative emissions — yet asked to skip the ladder. |
-| 6 | Complication 3 | Zambia bet 85% of its grid on "clean" hydropower — drought left us in the dark 21 hrs/day. |
-| 7 | Resolution | The honest middle path: gas as bridge → renewables stacked → firm power until storage catches up. |
-| 8 | Close | Counting only future deaths and ignoring 3.2M present-day energy-poverty deaths is bad arithmetic — and bad ethics. |
+| # | Purpose | Title (action sentence) | Chart |
+|---|---|---|---|
+| 1 | Title | The Case For Fossil Fuels — follow-up to "How Climate Change Affects the World We Live In" | — |
+| 2 | Big Idea | *(the sentence on its own — Knaflic standard)* | — |
+| 3 | Situation | Last week's deck argued: fossil fuels drive climate change → therefore cut them. | — |
+| 4 | Complication 1 | Cooking smoke kills ~3.2M people every year — most where there's no clean fuel. | Isotype waffle (each dot = 100k lives) |
+| 5 | Complication 2 | Africa = 17% of population, <3% of cumulative emissions — yet asked to skip the ladder. | Two-row isotype (100 person icons per row) |
+| 6 | Complication 3 | Zambia bet 85% of its grid on "clean" hydropower — drought left us in the dark 21 hrs/day. | 24-hour blackout donut |
+| 7 | Bridge | Below ~3,000 kWh/person/year, every extra kWh buys life-years. Zambia sits on the steep part. | Hans-Rosling-style scatter |
+| 8 | Resolution | The honest middle path: gas as bridge → renewables stacked → firm power until storage catches up. | Three-block diagram |
+| 9 | Sources | Appendix — every statistic, with its citation. | — |
 
 ---
 
