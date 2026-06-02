@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The Case For Fossil Fuels (v3) — Choolwe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A steelman follow-up presentation by Choolwe — reliability spine." />
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Futuristic climate-tech palette */
+    --cyan:#22D3EE; --cyan-deep:#0EA5C4; --teal:#2DD4BF;
+    --amber:#FB923C; --amber-hot:#F97316; --amber-glow:rgba(251,146,60,.45);
+    --cyan-glow:rgba(34,211,238,.45);
+
+    --ink:#060912;            /* deepest background */
+    --ink-2:#0B1120;          /* panel base */
+    --text:#E8EEF7; --muted:#9FB0C8; --grey:#64748B;
+    --line:rgba(148,178,216,.14);
+    --glass:rgba(255,255,255,.045);
+    --glass-2:rgba(255,255,255,.07);
+    --glass-brd:rgba(148,200,255,.16);
+
+    --shadow:0 18px 50px rgba(0,0,0,.55);
+    --font:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#03050b;color:var(--text);
+    font-family:var(--font);-webkit-font-smoothing:antialiased;}
+
+  /* ===== Stage ===== */
+  .stage{
+    width:100vw; height:100vh; overflow:hidden; position:relative;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(1200px 700px at 12% -10%, rgba(34,211,238,.12), transparent 60%),
+      radial-gradient(1100px 800px at 110% 120%, rgba(251,146,60,.10), transparent 55%),
+      linear-gradient(160deg,#04060d 0%,#070b16 50%,#04060d 100%);
+  }
+
+  .deck{
+    position:relative;
+    width:min(95vw, 168vh);
+    aspect-ratio: 16/9;
+    background:
+      radial-gradient(900px 600px at 100% 0%, rgba(34,211,238,.06), transparent 55%),
+      linear-gradient(155deg,#0a1020 0%,#070b16 60%,#090e1c 100%);
+    box-shadow:0 30px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(148,200,255,.06);
+    overflow:hidden;
+    border-radius:14px;
+  }
+  /* animated grid mesh + scanline glow on the deck */
+  .deck::before{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(120,180,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,180,255,.05) 1px, transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(120% 120% at 50% 0%, #000 35%, transparent 85%);
+            mask-image:radial-gradient(120% 120% at 50% 0%, #000 35%, transparent 85%);
+  }
+  .deck::after{
+    content:""; position:absolute; left:0; right:0; top:0; height:140%;
+    pointer-events:none; z-index:0;
+    background:linear-gradient(180deg, transparent, rgba(34,211,238,.05) 50%, transparent);
+    animation:sweep 9s linear infinite;
+  }
+  @keyframes sweep{ 0%{transform:translateY(-60%)} 100%{transform:translateY(40%)} }
+
+  .slide{
+    position:absolute; inset:0; z-index:1;
+    padding:46px 58px 60px 58px;
+    opacity:0; transform:translateY(18px) scale(.992);
+    pointer-events:none;
+    transition:opacity .45s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+    overflow:hidden;
+  }
+  .slide.active{ opacity:1; transform:none; pointer-events:auto; }
+
+  /* ===== Top accent bar — glowing gradient ===== */
+  .topbar{
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,var(--cyan),var(--teal),transparent);
+    box-shadow:0 0 18px var(--cyan-glow);
+  }
+  .topbar.amber{
+    background:linear-gradient(90deg,var(--amber),var(--amber-hot),transparent);
+    box-shadow:0 0 18px var(--amber-glow);
+  }
+
+  /* ===== Chapter tag ===== */
+  .tag{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:var(--mono);
+    font-size:11px; font-weight:700; letter-spacing:0.22em;
+    color:var(--cyan); text-transform:uppercase;
+    padding:5px 12px; border-radius:999px;
+    background:rgba(34,211,238,.08); border:1px solid rgba(34,211,238,.25);
+    box-shadow:inset 0 0 14px rgba(34,211,238,.10);
+  }
+  .tag.amber{ color:var(--amber);
+    background:rgba(251,146,60,.08); border-color:rgba(251,146,60,.28);
+    box-shadow:inset 0 0 14px rgba(251,146,60,.10); }
+  .tag::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:currentColor; box-shadow:0 0 10px currentColor;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+
+  h1.action{
+    font-size: clamp(20px, 2.25vw, 31px);
+    font-weight:700; color:var(--text); margin:18px 0 18px 0;
+    line-height:1.28; letter-spacing:-0.01em;
+  }
+  h1.action.small{ font-size: clamp(18px, 1.95vw, 27px); }
+  h1.action .glow-c{ color:var(--cyan); text-shadow:0 0 22px var(--cyan-glow); }
+  h1.action .glow-a{ color:var(--amber); text-shadow:0 0 22px var(--amber-glow); }
+
+  .muted{ color:var(--muted); }
+  .cyan{ color:var(--cyan); }
+  .amber{ color:var(--amber); }
+  .bold{ font-weight:700; color:var(--text); }
+
+  /* ===== Title slide ===== */
+  .title{
+    display:grid; grid-template-columns: 38% 1fr; padding:0;
+  }
+  .title .left{
+    position:relative; color:white; padding:52px;
+    display:flex; flex-direction:column; justify-content:center;
+    background:
+      radial-gradient(500px 380px at 20% 20%, rgba(34,211,238,.28), transparent 60%),
+      linear-gradient(160deg,#0c2a3c 0%,#0a1626 70%);
+    border-right:1px solid rgba(34,211,238,.25);
+    overflow:hidden;
+  }
+  .title .left::after{
+    content:""; position:absolute; right:-2px; top:0; bottom:0; width:2px;
+    background:linear-gradient(180deg,transparent,var(--cyan),transparent);
+    box-shadow:0 0 20px var(--cyan-glow);
+  }
+  .title .right{
+    padding:52px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .title .kicker{ font-family:var(--mono); color:var(--cyan); font-weight:700;
+    letter-spacing:0.26em; font-size:12px; text-shadow:0 0 14px var(--cyan-glow); }
+  .title h1.big{
+    font-size:clamp(42px,5.2vw,72px); line-height:1.02;
+    margin:16px 0 0 0; font-weight:700; letter-spacing:-0.02em;
+    background:linear-gradient(180deg,#fff 30%,#bfe9f5);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 0 40px rgba(34,211,238,.25);
+  }
+  .title .sub{ color:#bcd6e8; margin-top:18px; font-size:16px; font-family:var(--mono);
+    letter-spacing:.04em; }
+  .title h2{
+    font-size:clamp(20px,2.7vw,33px); font-weight:700;
+    margin:8px 0 0 0; color:var(--text); line-height:1.16; letter-spacing:-0.01em;
+  }
+  .title .author{
+    margin-top:30px; color:var(--cyan); font-weight:700; font-size:23px;
+    text-shadow:0 0 18px var(--cyan-glow);
+  }
+  .title .who{ color:var(--muted); margin-top:6px; }
+  .title .corner-icons{
+    position:absolute; right:36px; bottom:32px;
+    display:flex; gap:16px; z-index:2;
+  }
+  .title .corner-icons .icon{ width:44px; height:44px;
+    filter:drop-shadow(0 0 12px rgba(34,211,238,.5)); }
+
+  /* ===== Big idea slide ===== */
+  .bigidea{ padding-left:84px; }
+  .bigidea::before{
+    content:""; position:absolute; left:0; top:8px; bottom:0; width:6px;
+    background:linear-gradient(180deg,var(--amber),var(--amber-hot));
+    box-shadow:0 0 24px var(--amber-glow);
+  }
+  .bigidea .setup{
+    font-size:clamp(20px,2.1vw,31px); color:var(--muted); line-height:1.4;
+    margin-top:26px; max-width:92%; font-weight:400;
+  }
+  .bigidea .setup .em{ color:var(--amber); font-weight:600;
+    text-shadow:0 0 18px var(--amber-glow); }
+  .bigidea .resolution{
+    font-size:clamp(27px,3.5vw,48px); font-weight:700;
+    line-height:1.16; margin-top:40px; letter-spacing:-0.015em;
+    background:linear-gradient(110deg,#fff 10%,var(--cyan) 70%,var(--teal));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 0 50px rgba(34,211,238,.18);
+  }
+
+  /* ===== Glass card grid ===== */
+  .cards{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;
+    margin-top:22px;
+  }
+  .card{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:16px; padding:22px 24px;
+    position:relative; overflow:hidden; min-height:232px;
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .card:hover{ transform:translateY(-4px);
+    border-color:rgba(148,200,255,.32);
+    box-shadow:0 18px 44px rgba(0,0,0,.5), 0 0 0 1px rgba(148,200,255,.18); }
+  .card.blue::before, .card.amber::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  }
+  .card.blue::before{ background:linear-gradient(180deg,var(--cyan),var(--teal));
+    box-shadow:0 0 16px var(--cyan-glow); }
+  .card.amber::before{ background:linear-gradient(180deg,var(--amber),var(--amber-hot));
+    box-shadow:0 0 16px var(--amber-glow); }
+  .card .icon{
+    width:46px; height:46px; border-radius:13px;
+    display:inline-flex; align-items:center; justify-content:center;
+    margin-bottom:12px; font-size:20px;
+    border:1px solid rgba(255,255,255,.14);
+  }
+  .card.blue .icon{ background:rgba(34,211,238,.12); box-shadow:0 0 18px rgba(34,211,238,.25); }
+  .card.amber .icon{ background:rgba(251,146,60,.12); box-shadow:0 0 18px rgba(251,146,60,.25); }
+  .card h3{ margin:0 0 6px 0; font-size:19px; color:var(--text); font-weight:600; }
+  .card p{ margin:0; color:var(--muted); font-size:14px; line-height:1.55; }
+
+  /* ===== Chart layout ===== */
+  .chartrow{
+    display:grid; grid-template-columns: 1fr 330px; gap:26px;
+    align-items:start; margin-top:12px;
+  }
+  .chartrow .chart{
+    min-height:60vh;
+    border-radius:16px;
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    box-shadow:inset 0 0 60px rgba(34,211,238,.04);
+  }
+  .stakes{
+    background:linear-gradient(160deg, rgba(251,146,60,.14), rgba(251,146,60,.04));
+    border:1px solid rgba(251,146,60,.3);
+    border-radius:16px; padding:24px;
+    box-shadow:inset 0 0 30px rgba(251,146,60,.08);
+  }
+  .stakes .kicker{
+    color:var(--amber); font-family:var(--mono); font-size:11px; font-weight:700;
+    letter-spacing:0.16em; text-transform:uppercase;
+  }
+  .stakes .big{ font-family:var(--mono); font-size:42px; font-weight:800; color:var(--amber);
+    line-height:1; margin:12px 0 8px 0; text-shadow:0 0 26px var(--amber-glow);}
+  .stakes .lbl{ color:var(--text); font-size:14px; }
+  .stakes .foot{ color:var(--muted); font-size:12px; margin-top:14px; }
+
+  .insight{
+    background:linear-gradient(160deg, rgba(34,211,238,.12), rgba(34,211,238,.03));
+    border:1px solid rgba(34,211,238,.28);
+    border-radius:16px; padding:16px 20px; margin-top:12px;
+    box-shadow:inset 0 0 30px rgba(34,211,238,.06);
+  }
+  .insight .line1{ color:var(--cyan); font-weight:600; font-size:15px;
+    text-shadow:0 0 16px var(--cyan-glow); }
+  .insight .line2{ color:var(--muted); font-size:13px; margin-top:5px; line-height:1.5; }
+
+  /* ===== Resolution three-block ===== */
+  .resolve{
+    display:grid; grid-template-columns: 1fr 30px 1fr 30px 1fr; gap:0;
+    margin-top:10px;
+  }
+  .resolve .arrow{
+    display:flex; align-items:center; justify-content:center;
+    color:var(--cyan); font-size:26px; text-shadow:0 0 14px var(--cyan-glow);
+    animation:flow 2.5s ease-in-out infinite;
+  }
+  .resolve .arrow:nth-of-type(4){ animation-delay:.4s; }
+  @keyframes flow{ 0%,100%{transform:translateX(0);opacity:.6} 50%{transform:translateX(4px);opacity:1} }
+  .block{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:18px; padding:24px;
+    min-height:282px; position:relative; overflow:hidden;
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 10px 30px rgba(0,0,0,.35);
+  }
+  .block.lead{
+    background:
+      radial-gradient(360px 240px at 70% 0%, rgba(251,146,60,.22), transparent 60%),
+      linear-gradient(160deg, rgba(251,146,60,.10), rgba(10,16,30,.4));
+    border-color:rgba(251,146,60,.35);
+    box-shadow:inset 0 0 40px rgba(251,146,60,.10), 0 12px 34px rgba(0,0,0,.4);
+  }
+  .block .kicker{
+    font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--cyan);
+  }
+  .block.lead .kicker{ color:var(--amber); }
+  .block h3{ font-size:22px; margin:8px 0 14px 0; color:var(--text); font-weight:600; }
+  .block .body{ font-size:14px; line-height:1.6; color:var(--muted); }
+  .block .icon-tr{
+    position:absolute; right:18px; top:18px;
+    width:38px; height:38px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center; font-size:18px;
+    background:rgba(34,211,238,.12); border:1px solid rgba(34,211,238,.3);
+    box-shadow:0 0 18px rgba(34,211,238,.22);
+  }
+  .block.lead .icon-tr{ background:rgba(251,146,60,.14);
+    border-color:rgba(251,146,60,.35); box-shadow:0 0 18px rgba(251,146,60,.28); }
+
+  /* ===== Close slide ===== */
+  .close{ display:grid; grid-template-rows: auto auto 1fr; gap:14px; }
+  .close .verdict{
+    font-size:clamp(22px,2.6vw,36px); font-weight:700; color:var(--text);
+    line-height:1.2; margin:14px 0 26px 0;
+  }
+  .close .col{
+    display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;
+  }
+  .col .pane{
+    border-radius:16px; padding:22px 24px;
+    border:1px solid var(--glass-brd);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  }
+  .col .pane.not{ background:var(--glass); color:var(--muted); }
+  .col .pane.am{
+    background:linear-gradient(160deg, rgba(34,211,238,.14), rgba(34,211,238,.04));
+    border-color:rgba(34,211,238,.3); color:var(--text);
+    box-shadow:inset 0 0 30px rgba(34,211,238,.08);
+  }
+  .col .pane .kicker{
+    font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.16em;
+    text-transform:uppercase; opacity:.9;
+  }
+  .col .pane ul{ margin:10px 0 0 18px; padding:0; }
+  .col .pane li{ margin:7px 0; font-size:14px; line-height:1.5; }
+
+  .thanks{ margin-top:22px; color:var(--cyan); font-weight:700; font-size:16px;
+    text-shadow:0 0 16px var(--cyan-glow); }
+
+  /* ===== Sources slide ===== */
+  .src-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:10px 30px;
+    margin-top:16px;
+  }
+  .src{
+    display:grid; grid-template-columns: 12px 1fr; gap:10px;
+    padding:9px 0; border-bottom:1px solid var(--line);
+  }
+  .src::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--cyan); margin-top:7px; box-shadow:0 0 10px var(--cyan-glow);
+  }
+  .src .claim{ font-weight:600; font-size:13px; color:var(--text); }
+  .src .ref{ color:var(--muted); font-size:12px; margin-top:2px; font-family:var(--mono); }
+
+  /* ===== HUD ===== */
+  .hud{
+    position:fixed; left:0; right:0; bottom:0;
+    background:rgba(6,9,18,.78); color:#cfe0f2; padding:9px 16px;
+    display:flex; gap:14px; align-items:center;
+    font-size:12px; z-index:50; backdrop-filter:blur(12px);
+    border-top:1px solid rgba(148,200,255,.12);
+  }
+  .hud .dots{ display:flex; gap:7px; }
+  .hud .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:rgba(148,178,216,.28); cursor:pointer; transition:all .25s ease;
+  }
+  .hud .dot:hover{ background:rgba(148,178,216,.55); }
+  .hud .dot.active{ background:var(--cyan); box-shadow:0 0 12px var(--cyan-glow);
+    transform:scale(1.25); }
+  .hud .grow{ flex:1; }
+  .hud button{
+    background:rgba(148,200,255,.06); color:#cfe0f2;
+    border:1px solid rgba(148,200,255,.2);
+    padding:5px 12px; border-radius:8px; cursor:pointer; font-size:12px;
+    font-family:var(--mono); letter-spacing:.03em; transition:all .2s ease;
+  }
+  .hud button:hover{ background:rgba(34,211,238,.14); border-color:rgba(34,211,238,.4);
+    color:#fff; }
+  .hud .help{ color:var(--grey); font-size:11px; font-family:var(--mono); }
+
+  /* ===== Speaker notes overlay ===== */
+  .notes{
+    position:fixed; right:18px; bottom:58px; width:390px; max-height:50vh;
+    overflow:auto; background:rgba(10,16,30,.92); color:#d6e2f0; padding:18px;
+    border-radius:14px; box-shadow:0 16px 50px rgba(0,0,0,.6);
+    font-size:13px; line-height:1.6; display:none; z-index:60;
+    border:1px solid rgba(34,211,238,.25); backdrop-filter:blur(14px);
+  }
+  .notes.show{ display:block; }
+  .notes h4{ margin:0 0 8px 0; color:var(--cyan); font-family:var(--mono);
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase; }
+
+  /* ===== Footer ===== */
+  .slide .footer{
+    position:absolute; left:58px; right:58px; bottom:18px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:11px; color:var(--grey); font-family:var(--mono); letter-spacing:.04em;
+  }
+
+  .ic{ display:inline-flex; align-items:center; justify-content:center; }
+
+  /* ===== Print ===== */
+  @media print{
+    body{ background:white; }
+    .stage{ height:auto; display:block; background:#04060d; }
+    .deck{ box-shadow:none; width:100%; aspect-ratio:auto; }
+    .slide{
+      position:relative; opacity:1; transform:none;
+      page-break-after:always; height:auto; min-height:90vh;
+    }
+    .hud, .notes{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+<div class="deck" id="deck">
+
+<!-- ============ Slide 1: Title ============ -->
+<section class="slide title active" data-notes="Yesterday I argued we should cut fossil fuels. You all saw that talk, so I won't recap it. Today I want to make the most honest counter-argument I can — not because I've changed my mind on climate change, but because the picture I painted was incomplete. The story today is simple: reliable energy is survival, and clean energy alone can't guarantee it yet — not in Lusaka, and not in Alberta.">
+  <div class="left">
+    <span class="kicker">FOLLOW-UP</span>
+    <h1 class="big">The Case<br/>For Fossil<br/>Fuels</h1>
+    <div class="sub">A steelman counter-argument</div>
+  </div>
+  <div class="right">
+    <span class="kicker" style="color:var(--grey)">// TODAY</span>
+    <h2 style="margin-top:18px">Keeping the lights —<br/>and the heat — on.</h2>
+    <div class="who" style="margin-top:12px">Why cutting fossil fuels too fast can cost more lives than it saves — in Lusaka and in Alberta alike.</div>
+    <div class="author">Choolwe</div>
+    <div class="who">Analytics in Training&nbsp;&nbsp;•&nbsp;&nbsp;May 2026</div>
+  </div>
+  <div class="corner-icons">
+    <svg class="icon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#F97316"/><path d="M16 7c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 1-5 1-8z" fill="#FFE3C4"/></svg>
+    <svg class="icon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#22D3EE"/><path d="M18 6 11 18h4l-1 8 7-12h-4l1-8z" fill="#04121a"/></svg>
+  </div>
+</section>
+
+<!-- ============ Slide 2: Primer — what are fossil fuels ============ -->
+<section class="slide" data-notes="Quick grounding before the argument. Fossil fuels are just stored ancient sunlight — plants and ocean plankton, buried and cooked over millions of years into coal, oil and gas. Burning them releases that stored energy, and the CO₂ that comes with it. They're still roughly 80% of all the energy humanity uses — not just electricity, but transport, heat, and the steel, cement and fertilizer modern life is built from. Hold that scale in mind for everything that follows.">
+  <div class="topbar"></div>
+  <span class="tag">Primer • What we're talking about</span>
+  <h1 class="action">Fossil fuels are stored ancient sunlight —<br/>and still about <span class="glow-c">80%</span> of the energy the world runs on.</h1>
+  <div class="cards">
+    <div class="card blue">
+      <div class="icon">⛏️</div>
+      <h3>Coal</h3>
+      <p>Ancient land plants and swamp forests, buried and compressed. Mined as a solid.</p>
+    </div>
+    <div class="card amber">
+      <div class="icon">🛢️</div>
+      <h3>Oil (petroleum)</h3>
+      <p>Ancient ocean plankton and algae, cooked under pressure. Drilled as a liquid.</p>
+    </div>
+    <div class="card blue">
+      <div class="icon">🔥</div>
+      <h3>Natural gas</h3>
+      <p>The same organic matter, cooked hotter. Drilled as a gas — mostly methane.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:22px">What we use them for today: <span class="bold">electricity · transport · heat · industry (steel, cement, fertilizer) · cooking</span>.</p>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>02 / 09</span></div>
+</section>
+
+<!-- ============ Slide 3: Big Idea ============ -->
+<section class="slide bigidea" data-notes="This is what I want you to walk out of the room remembering. Reliable energy is survival — and the clean-energy-only plan can't guarantee it yet. We have lived proof on two continents: Zambia's drought and a Canadian winter. So the honest answer isn't abandonment — it's a managed transition. Let me show you how I got there.">
+  <div class="topbar amber"></div>
+  <span class="tag amber">The Big Idea</span>
+  <div class="setup">
+    Reliable energy is survival — and <span class="em">clean energy alone can't deliver it</span> when we need it most.
+    From <span class="em">Zambia's drought</span> to <span class="em">a Canadian winter</span>, cutting fossil fuels now costs lives.
+  </div>
+  <div class="resolution">
+    The honest path is a managed transition,<br/>not abandonment.
+  </div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>03 / 09</span></div>
+</section>
+
+<!-- ============ Slide 4: Zambia clock ============ -->
+<section class="slide" data-notes="We lived this. We did the 'clean' thing — 85% of our installed capacity is hydropower. Then the climate broke our climate solution. The 2024 drought collapsed reservoir levels and ZESCO ran load shedding of up to 21 hours a day. The lesson is NOT 'burn more coal.' The lesson is: firm, dispatchable power matters, and pretending otherwise is paid for in dark hospitals and empty cold-chains.">
+  <div class="topbar amber"></div>
+  <span class="tag amber">Complication • The reliability test, in the South</span>
+  <h1 class="action small">Zambia bet 85% of its grid on “clean” hydropower —<br/>and a climate-driven drought left us in the dark for <span class="glow-a">21 hours a day</span>.</h1>
+  <div class="chartrow">
+    <div class="chart" id="chart-zambia" style="height:54vh;"></div>
+    <div>
+      <div class="stakes" style="margin-bottom:10px;">
+        <div class="kicker">The bet</div>
+        <div class="big" style="font-size:30px;">85% hydropower</div>
+        <div class="lbl">of installed capacity.</div>
+      </div>
+      <div class="insight">
+        <div class="line1">The lesson</div>
+        <div class="line2">Firm, dispatchable power matters. Pretending otherwise is paid for in dark hospitals.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>04 / 09</span></div>
+</section>
+
+<!-- ============ Slide 5: Cold-climate test ============ -->
+<section class="slide" data-notes="And it isn't only the poor South. In January 2024, Alberta — a rich, modern province — hit a minus-forty cold snap. Demand smashed a record at 12,384 megawatts. The province has over six thousand megawatts of wind and solar, but at the evening peak the sun had set and the wind was calm, so it delivered almost nothing. The grid fell to TEN megawatts of reserve and the government sent an emergency text telling everyone to cut power to essentials. Gas-fired plants carried the province. And remember — worldwide, cold kills about nine times as many people as heat. In most of the cold world, staying warm runs on fossil fuels: gas heats roughly half of Canadian homes. 'No fossil fuels' in a minus-thirty winter means no heat.">
+  <div class="topbar amber"></div>
+  <span class="tag amber">Complication • The reliability test, in the North</span>
+  <h1 class="action small">When it's coldest, clean energy is weakest —<br/>and fossil fuels are what <span class="glow-a">keep people alive</span>.</h1>
+  <div class="chartrow">
+    <div class="chart" id="chart-cold" style="height:52vh;"></div>
+    <div>
+      <div class="stakes" style="margin-bottom:10px;">
+        <div class="kicker">Why warmth is non-negotiable</div>
+        <div class="big" style="font-size:34px;">~9× more</div>
+        <div class="lbl">deaths from cold than from heat, worldwide.</div>
+      </div>
+      <div class="insight">
+        <div class="line1">Gas heats about half of Canadian homes.</div>
+        <div class="line2">72% in Alberta, 68% in Saskatchewan, 62% in Ontario. In a −30° winter, “no fossil fuels” means no heat.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>05 / 09</span></div>
+</section>
+
+<!-- ============ Slide 6: Asymmetry isotype ============ -->
+<section class="slide" data-notes="Now the justice layer. Every wealthy country on Earth got rich by burning coal, then oil, then gas. They are now asking the continent that contributed least to the problem to skip that ladder — using clean-energy technology whose OWN supply chain still runs on fossil fuels. That's not a climate plan. That's an injustice with a green sticker on it.">
+  <div class="topbar amber"></div>
+  <span class="tag amber">Complication • The justice asymmetry</span>
+  <h1 class="action small">Africa hosts <span class="glow-c">17%</span> of the world's people, caused under <span class="glow-a">3%</span> of cumulative<br/>emissions — and is being asked to skip the ladder every wealthy country climbed.</h1>
+  <div class="chart" id="chart-asymmetry" style="height:50vh;"></div>
+  <div class="insight">
+    <div class="line1">Every wealthy country got rich by burning coal, then oil, then gas.</div>
+    <div class="line2">Even the clean-energy supply chain itself — steel, cement, shipping — still runs on fossil fuels today.</div>
+  </div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>06 / 09</span></div>
+</section>
+
+<!-- ============ Slide 7: Bridge — energy & life expectancy ============ -->
+<section class="slide" data-notes="This is the Hans Rosling curve. Below about three thousand kilowatt-hours per person per year, every additional kilowatt-hour translates directly into life-years — through clinics, refrigerated vaccines, lit classrooms, water pumps. Zambia is right on the steep part of that curve. Cutting energy access there costs life-years immediately. That's why the moral arithmetic doesn't end with climate.">
+  <div class="topbar amber"></div>
+  <span class="tag amber">Bridge • What energy access buys</span>
+  <h1 class="action small">Below ~3,000 kWh per person per year, every extra kWh<br/>buys <span class="glow-c">life-years</span>. Zambia sits right on the steep part of the curve.</h1>
+  <div class="chart" id="chart-energy-life" style="height:56vh;"></div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>07 / 09</span></div>
+</section>
+
+<!-- ============ Slide 8: Resolution ============ -->
+<section class="slide" data-notes="I'm not arguing fossil fuels forever. I'm arguing for a MANAGED transition. Natural gas as a bridge — emits half what coal does and Africa holds 13% of global reserves, and it's the firm power that carried Alberta and would have spared Zambia. Renewables scaled aggressively on top — solar in Zambia is already the cheapest new capacity. And firm power kept on until storage and grid infrastructure can stand alone. That's how we keep the lights and the heat on while decarbonising.">
+  <div class="topbar"></div>
+  <span class="tag">Resolution • The managed transition</span>
+  <h1 class="action small">Gas as a bridge, renewables stacked on top, firm power kept<br/>until storage can carry the load — in that order.</h1>
+  <div class="resolve">
+    <div class="block lead">
+      <div class="kicker">Now — bridge</div>
+      <div class="icon-tr">🔥</div>
+      <h3>Natural gas</h3>
+      <div class="body">Emits 50–60% less CO₂ than coal.<br/><br/>
+        Firm and dispatchable — the power that carried Alberta and would have spared Zambia.<br/><br/>
+        Faster to deploy than nuclear; Africa holds ~13% of proven gas reserves.</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="block">
+      <div class="kicker">Build-out</div>
+      <div class="icon-tr">⚡</div>
+      <h3>Renewables, hard</h3>
+      <div class="body">Solar in Zambia is already the cheapest new capacity.<br/><br/>
+        Wind, hydro diversification, storage — scaled in parallel, not waited for.</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="block">
+      <div class="kicker">Then — retire</div>
+      <div class="icon-tr">🌍</div>
+      <h3>Phase fossil fuels down</h3>
+      <div class="body">When grids are firm and storage can carry the load, retire gas plants.<br/><br/>
+        Not before. Not as a slogan. As an engineering schedule.</div>
+    </div>
+  </div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>08 / 09</span></div>
+</section>
+
+<!-- ============ Slide 9: Sources ============ -->
+<section class="slide" data-notes="Reference slide for Q&A. If anyone questions a stat, the source is here. Full URLs in the repo's research/notes.md.">
+  <div class="topbar"></div>
+  <span class="tag">Appendix • Sources</span>
+  <h1 class="action small">Every statistic on every slide, with a citation.</h1>
+  <p class="muted" style="margin-top:-6px">Full notes preserved in the repo at <span class="bold">research/notes.md</span>.</p>
+  <div class="src-grid" id="sources"></div>
+  <div class="footer"><span>Choolwe • The Case For Fossil Fuels</span><span>09 / 09</span></div>
+</section>
+
+</div>
+</div>
+
+<!-- Speaker notes overlay -->
+<div class="notes" id="notes"><h4>Speaker notes</h4><div id="notesBody"></div></div>
+
+<!-- HUD -->
+<div class="hud">
+  <button id="prev">← Prev</button>
+  <button id="next">Next →</button>
+  <div class="dots" id="dots"></div>
+  <div class="grow"></div>
+  <span class="help">←/→ navigate • N notes • F fullscreen • P print</span>
+  <button id="notesBtn">Notes (N)</button>
+  <button id="fsBtn">Fullscreen (F)</button>
+</div>
+
+<script>
+/* ---------- Sources data ---------- */
+const SOURCES = [
+  ["Africa electricity access (~600M without)",
+   "IEA, Financing Electricity Access in Africa (2025)"],
+  ["Africa cumulative CO₂ emissions (<3%; sub-Saharan ~0.55%)",
+   "Energy for Growth Hub (citing Our World in Data)"],
+  ["Africa population share (~17% global)",
+   "UN World Population Prospects"],
+  ["Zambia capacity mix (85% hydropower; ~3,986 MW)",
+   "Global Legal Insights, Energy Laws and Regulations 2025: Zambia"],
+  ["Zambia 2024 load shedding (up to 21 hrs/day)",
+   "Pulitzer Center; Afrobarometer AD1178 (2025)"],
+  ["Cold kills ~9× more than heat (~4.6M vs ~489k deaths/yr)",
+   "The Lancet Planetary Health (Gasparrini et al.)"],
+  ["Canadian homes heated by gas (~half; 72% Alberta, 62% Ontario)",
+   "Statistics Canada — How Canadians heat their home"],
+  ["Alberta cold-snap grid alert (record 12,384 MW; reserves to 10 MW)",
+   "AESO / Alberta Market Surveillance Admin., Jan & Apr 2024 Event Report"],
+  ["Natural gas vs coal CO₂ (50–60% less); Africa gas reserves (~13%)",
+   "Atlantic Council, Natural gas in Africa's energy transition"],
+  ["Steel & cement embodied emissions in renewables",
+   "MIT Climate Portal"],
+  ["Life expectancy vs electricity per capita (illustrative)",
+   "World Bank Indicators (kWh/capita; life expectancy at birth)"],
+];
+const srcEl = document.getElementById("sources");
+SOURCES.forEach(([claim, ref])=>{
+  const d = document.createElement("div");
+  d.className = "src";
+  d.innerHTML = `<div><div class="claim">${claim}</div><div class="ref">${ref}</div></div>`;
+  srcEl.appendChild(d);
+});
+
+/* ---------- Palette (futuristic dark) ---------- */
+const CYAN="#22D3EE", TEAL="#2DD4BF", AMBER="#FB923C", AMBER_HOT="#F97316",
+      SOFT="rgba(148,178,216,.22)", TEXT="#E8EEF7", MUTED="#9FB0C8",
+      GRID="rgba(148,178,216,.12)", TRANSPARENT="rgba(0,0,0,0)";
+
+const baseFont = {family:'"Space Grotesk", -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
+                  color:TEXT};
+
+/* ---------- Chart A: Zambia 24-hour donut ---------- */
+function renderZambia(){
+  Plotly.newPlot("chart-zambia", [{
+    type:"pie", hole:.64,
+    values:[21, 3],
+    labels:["No power (21 hrs)", "Power (3 hrs)"],
+    marker:{colors:[AMBER, CYAN], line:{color:"#0a1020", width:3}},
+    textinfo:"label", textposition:"outside",
+    textfont:{size:13, color:MUTED},
+    hovertemplate:"%{label}<br>%{value} hrs/day<extra></extra>",
+    sort:false, direction:"clockwise", rotation:90,
+    showlegend:false,
+  }], {
+    margin:{l:30, r:30, t:30, b:50},
+    paper_bgcolor:TRANSPARENT, plot_bgcolor:TRANSPARENT,
+    annotations:[
+      {text:`<b style="font-size:64px;color:${AMBER}">21</b>`,
+       showarrow:false, x:0.5, y:0.55, xref:"paper", yref:"paper"},
+      {text:`<span style="color:${TEXT};font-size:14px">hours dark, per day</span>`,
+       showarrow:false, x:0.5, y:0.42, xref:"paper", yref:"paper"},
+      {text:`<span style="color:${MUTED};font-size:11px">during the 2024 drought</span>`,
+       showarrow:false, x:0.5, y:0.35, xref:"paper", yref:"paper"},
+      {text:`<span style="color:${MUTED};font-size:11px">Zambia's grid is ~85% hydropower. The 2024 drought collapsed reservoir levels.</span>`,
+       showarrow:false, x:0.5, y:-0.02, xref:"paper", yref:"paper"},
+    ],
+    font:baseFont,
+  }, {displayModeBar:false, responsive:true});
+}
+
+/* ---------- Chart B: Alberta cold-snap — capacity vs delivered ---------- */
+function renderCold(){
+  Plotly.newPlot("chart-cold", [{
+    type:"bar", orientation:"h",
+    y:["Delivered at the cold-snap peak", "Installed wind + solar"],
+    x:[120, 6131],
+    marker:{color:[AMBER, CYAN],
+            line:{color:[AMBER_HOT, TEAL], width:1.5}},
+    width:[0.55, 0.55],
+    hovertemplate:[
+      "Delivered at the Jan 13, 2024 evening peak:<br>near zero — solar had set, wind was calm<extra></extra>",
+      "Installed wind + solar capacity: 6,131 MW<extra></extra>"],
+    showlegend:false,
+  }], {
+    margin:{l:40, r:40, t:20, b:70},
+    paper_bgcolor:TRANSPARENT, plot_bgcolor:TRANSPARENT,
+    bargap:0.45,
+    xaxis:{visible:false, range:[0, 7700]},
+    yaxis:{tickfont:{size:14, color:TEXT}, automargin:true},
+    annotations:[
+      {x:6131, y:"Installed wind + solar", xref:"x", yref:"y",
+       text:"<b>6,131 MW</b>", showarrow:false,
+       font:{color:CYAN, size:20}, xanchor:"left", xshift:14},
+      {x:120, y:"Delivered at the cold-snap peak", xref:"x", yref:"y",
+       text:"<b>almost nothing</b>", showarrow:false,
+       font:{color:AMBER, size:20}, xanchor:"left", xshift:14},
+      {x:0, y:-0.62, xref:"x", yref:"paper",
+       text:"<i>Jan 13, 2024 — −40° cold, record demand 12,384 MW, grid reserves down to 10 MW. Gas-fired power carried the province.</i>",
+       showarrow:false, font:{color:MUTED, size:11}, xanchor:"left", align:"left"},
+    ],
+    font:baseFont,
+  }, {displayModeBar:false, responsive:true});
+}
+
+/* ---------- Chart C: Asymmetry isotype ---------- */
+function renderAsymmetry(){
+  function row(n, n_hl, y){
+    const xs=[], ys=[], colors=[];
+    for(let i=0;i<n;i++){ xs.push(i); ys.push(y);
+      colors.push(i<n_hl ? AMBER : SOFT); }
+    return {
+      x:xs, y:ys, mode:"markers", type:"scatter",
+      marker:{size:18, color:colors, symbol:"circle",
+              line:{color:"rgba(10,16,30,.8)", width:1.5}},
+      showlegend:false,
+      hovertemplate: (i)=> ""
+    };
+  }
+  const t1 = row(100, 17, 1);
+  const t2 = row(100, 3,  0);
+  t1.hovertemplate = "Population: 17% of global<extra></extra>";
+  t2.hovertemplate = "Cumulative CO₂ emissions: <3% of global<extra></extra>";
+  const ann = [
+    {x:0, y:1.6, xref:"x", yref:"y", text:"<b>Share of global population</b>",
+     showarrow:false, font:{color:TEXT, size:14}, xanchor:"left"},
+    {x:99, y:1.6, xref:"x", yref:"y", text:"<b style='color:"+AMBER+"'>17%</b>",
+     showarrow:false, font:{color:AMBER, size:20}, xanchor:"right"},
+    {x:0, y:0.6, xref:"x", yref:"y", text:"<b>Share of cumulative CO₂ emissions</b>",
+     showarrow:false, font:{color:TEXT, size:14}, xanchor:"left"},
+    {x:99, y:0.6, xref:"x", yref:"y", text:"<b style='color:"+AMBER+"'>&lt;3%</b>",
+     showarrow:false, font:{color:AMBER, size:20}, xanchor:"right"},
+    {x:0, y:-0.5, xref:"x", yref:"y",
+     text:"<i>Each figure represents 1% of the global total. Africa, all data.</i>",
+     showarrow:false, font:{color:MUTED, size:11}, xanchor:"left"},
+  ];
+  Plotly.newPlot("chart-asymmetry", [t1, t2], {
+    margin:{l:10, r:10, t:30, b:30},
+    paper_bgcolor:TRANSPARENT, plot_bgcolor:TRANSPARENT,
+    xaxis:{visible:false, range:[-1, 101]},
+    yaxis:{visible:false, range:[-1, 2.2]},
+    annotations:ann, font:baseFont,
+  }, {displayModeBar:false, responsive:true});
+}
+
+/* ---------- Chart D: Energy → life expectancy ---------- */
+function renderEnergyLife(){
+  const data = [
+    {country:"Zambia",       kwh:700,   life:62, pop:20,   highlight:true},
+    {country:"Ethiopia",     kwh:100,   life:65, pop:120},
+    {country:"Nigeria",      kwh:150,   life:53, pop:220},
+    {country:"India",        kwh:1200,  life:70, pop:1430},
+    {country:"South Africa", kwh:3500,  life:62, pop:60},
+    {country:"Brazil",       kwh:2800,  life:75, pop:215},
+    {country:"China",        kwh:5400,  life:78, pop:1410},
+    {country:"Germany",      kwh:6300,  life:81, pop:84},
+    {country:"USA",          kwh:12000, life:77, pop:333},
+    {country:"Norway",       kwh:23000, life:83, pop:5},
+  ];
+  const xs   = data.map(d=>d.kwh);
+  const ys   = data.map(d=>d.life);
+  const txt  = data.map(d=>d.country);
+  const cols = data.map(d=>d.highlight ? AMBER : CYAN);
+  const sz   = data.map(d=>Math.max(16, Math.sqrt(d.pop)*2.5));
+  const hover = data.map(d=>
+    `<b>${d.country}</b><br>${d.kwh.toLocaleString()} kWh/person/year`+
+    `<br>Life expectancy: ${d.life} yrs<br>Population: ${d.pop}M<extra></extra>`);
+  Plotly.newPlot("chart-energy-life", [{
+    type:"scatter", mode:"markers+text",
+    x:xs, y:ys, text:txt, textposition:"top center",
+    textfont:{size:11, color:MUTED},
+    marker:{size:sz, color:cols, opacity:0.78,
+            line:{color:"rgba(10,16,30,.9)", width:1.5}},
+    hovertemplate:hover, hoverlabel:{align:"left"},
+    showlegend:false,
+  }], {
+    margin:{l:60, r:30, t:30, b:60},
+    paper_bgcolor:TRANSPARENT, plot_bgcolor:TRANSPARENT,
+    xaxis:{type:"log", title:{text:"Electricity per person, kWh per year (log scale)",
+           font:{color:MUTED, size:12}},
+           gridcolor:GRID, zerolinecolor:GRID, tickfont:{color:MUTED},
+           tickvals:[100, 1000, 10000],
+           ticktext:["100","1,000","10,000"]},
+    yaxis:{title:{text:"Life expectancy at birth, years",
+           font:{color:MUTED, size:12}},
+           gridcolor:GRID, zerolinecolor:GRID, tickfont:{color:MUTED}, range:[48, 90]},
+    shapes:[{type:"rect", xref:"x", yref:"paper",
+             x0:60, x1:3000, y0:0, y1:1,
+             fillcolor:AMBER, opacity:0.10, line:{width:0}}],
+    annotations:[
+      {x:Math.log10(250), y:87, xref:"x", yref:"y",
+       text:"<b>Below ~3,000 kWh/person/year,<br>every extra kWh buys life-years.</b>",
+       showarrow:false, font:{color:AMBER, size:12}, xanchor:"left",
+       align:"left"},
+      {x:Math.log10(8000), y:51, xref:"x", yref:"y",
+       text:"<i>Above ~3,000 kWh,<br>the curve flattens.</i>",
+       showarrow:false, font:{color:MUTED, size:11}, xanchor:"left"},
+    ],
+    font:baseFont,
+  }, {displayModeBar:false, responsive:true});
+}
+
+/* ---------- Slide navigation ---------- */
+const slides = Array.from(document.querySelectorAll(".slide"));
+const dotsEl = document.getElementById("dots");
+slides.forEach((_, i)=>{
+  const d = document.createElement("div");
+  d.className = "dot" + (i===0 ? " active" : "");
+  d.onclick = ()=> go(i);
+  dotsEl.appendChild(d);
+});
+let idx = 0;
+let chartsRendered = {};
+
+function renderChartFor(i){
+  if(chartsRendered[i]) return;
+  if(i===3){ renderZambia(); chartsRendered[i]=true; }
+  if(i===4){ renderCold(); chartsRendered[i]=true; }
+  if(i===5){ renderAsymmetry(); chartsRendered[i]=true; }
+  if(i===6){ renderEnergyLife(); chartsRendered[i]=true; }
+}
+function go(i){
+  i = Math.max(0, Math.min(slides.length-1, i));
+  slides[idx].classList.remove("active");
+  slides[i].classList.add("active");
+  Array.from(dotsEl.children).forEach((d,j)=> d.classList.toggle("active", j===i));
+  idx = i;
+  renderChartFor(i);
+  updateNotes();
+  // Force a resize so plotly re-fits the now-visible container.
+  requestAnimationFrame(()=>window.dispatchEvent(new Event("resize")));
+}
+function updateNotes(){
+  const txt = slides[idx].getAttribute("data-notes") || "";
+  document.getElementById("notesBody").textContent = txt;
+}
+updateNotes();
+
+document.getElementById("prev").onclick = ()=> go(idx-1);
+document.getElementById("next").onclick = ()=> go(idx+1);
+document.getElementById("notesBtn").onclick = ()=>
+  document.getElementById("notes").classList.toggle("show");
+document.getElementById("fsBtn").onclick = ()=>{
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+};
+
+window.addEventListener("keydown", e=>{
+  if(e.key==="ArrowRight" || e.key===" " || e.key==="PageDown") go(idx+1);
+  else if(e.key==="ArrowLeft" || e.key==="PageUp") go(idx-1);
+  else if(e.key==="Home") go(0);
+  else if(e.key==="End") go(slides.length-1);
+  else if(e.key==="n" || e.key==="N")
+    document.getElementById("notes").classList.toggle("show");
+  else if(e.key==="f" || e.key==="F"){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  else if(e.key==="p" || e.key==="P") window.print();
+});
+
+// Warm the first chart-bearing slide (Zambia) so it's ready on first navigation.
+renderChartFor(3);
+</script>
+</body>
+</html>
