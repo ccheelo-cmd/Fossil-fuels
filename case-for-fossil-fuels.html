@@ -125,6 +125,31 @@
     line-height:1.15; margin-top:38px;
   }
 
+  /* Cold-open hook slide (full-bleed) */
+  .coldopen{
+    background:linear-gradient(150deg,#143452 0%,#1F4E79 55%,#0E2236 100%);
+    color:#fff; padding:64px 80px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .coldopen::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:14px;
+    background:var(--amber);
+  }
+  .coldopen .co-kicker{
+    color:var(--amber); font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; font-size:13px;
+  }
+  .coldopen .co-line{
+    font-size:clamp(30px,4.4vw,60px); font-weight:800; line-height:1.12;
+    margin:18px 0 0 0; max-width:18ch; color:#fff;
+  }
+  .coldopen .co-em{ color:var(--amber); }
+  .coldopen .co-sub{
+    margin-top:24px; color:var(--blue-light);
+    font-size:clamp(15px,1.6vw,21px); max-width:42ch; line-height:1.4;
+  }
+  .coldopen .footer{ color:rgba(255,255,255,.55); }
+
   /* Card grid (situation / primer) */
   .cards{
     display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;
@@ -327,7 +352,15 @@
   </div>
 </section>
 
-<!-- ============ Slide 2: Primer — what are fossil fuels ============ -->
+<!-- ============ Slide 2: Cold-open hook (big idea) ============ -->
+<section class="slide coldopen" data-notes="Before any data, here's the one question this whole talk turns on. Yesterday I argued we should cut fossil fuels. But this is the steelman I couldn't shake: what if cutting them too fast costs more lives than it saves? Hold that question — everything today is my honest attempt to answer it.">
+  <span class="co-kicker">The big idea — the question this talk turns on</span>
+  <h1 class="co-line">What if cutting fossil fuels <span class="co-em">too fast</span> costs <span class="co-em">more lives</span> than it saves?</h1>
+  <div class="co-sub">A steelman I have to take seriously — even as someone who wants fossil fuels gone.</div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>2 / 10</span></div>
+</section>
+
+<!-- ============ Slide 3: Primer — what are fossil fuels ============ -->
 <section class="slide" data-notes="Quick grounding before the argument. Fossil fuels are just stored ancient sunlight — plants and ocean plankton, buried and cooked over millions of years into coal, oil and gas. Burning them releases that stored energy, and the CO₂ that comes with it. They're still roughly 80% of all the energy humanity uses — not just electricity, but transport, heat, and the steel, cement and fertilizer modern life is built from. Hold that scale in mind for everything that follows.">
   <div class="topbar"></div>
   <span class="tag">Primer  •  What we're talking about</span>
@@ -350,10 +383,10 @@
     </div>
   </div>
   <p class="muted" style="margin-top:22px">What we use them for today: <span class="bold">electricity · transport · heat · industry (steel, cement, fertilizer) · cooking</span>.</p>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>2 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>3 / 10</span></div>
 </section>
 
-<!-- ============ Slide 3: Big Idea ============ -->
+<!-- ============ Slide 4: Big Idea ============ -->
 <section class="slide bigidea" data-notes="This is what I want you to walk out of the room remembering. Reliable energy is survival — and the clean-energy-only plan can't guarantee it yet. We have lived proof on two continents: Zambia's drought and a Canadian winter. So the honest answer isn't abandonment — it's a managed transition. Let me show you how I got there.">
   <div class="topbar"></div>
   <span class="tag amber">The Big Idea</span>
@@ -364,10 +397,10 @@
   <div class="resolution">
     The honest path is a managed transition,<br/>not abandonment.
   </div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>3 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>4 / 10</span></div>
 </section>
 
-<!-- ============ Slide 4: Zambia clock ============ -->
+<!-- ============ Slide 5: Zambia clock ============ -->
 <section class="slide" data-notes="We lived this. We did the 'clean' thing — 85% of our installed capacity is hydropower. Then the climate broke our climate solution. The 2024 drought collapsed reservoir levels and ZESCO ran load shedding of up to 21 hours a day. The lesson is NOT 'burn more coal.' The lesson is: firm, dispatchable power matters, and pretending otherwise is paid for in dark hospitals and empty cold-chains.">
   <div class="topbar amber"></div>
   <span class="tag amber">Complication  •  The reliability test, in the South</span>
@@ -386,10 +419,10 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>4 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>5 / 10</span></div>
 </section>
 
-<!-- ============ Slide 5: Cold-climate test ============ -->
+<!-- ============ Slide 6: Cold-climate test ============ -->
 <section class="slide" data-notes="And it isn't only the poor South. In January 2024, Alberta — a rich, modern province — hit a minus-forty cold snap. Demand smashed a record at 12,384 megawatts. The province has over six thousand megawatts of wind and solar, but at the evening peak the sun had set and the wind was calm, so it delivered almost nothing. The grid fell to TEN megawatts of reserve and the government sent an emergency text telling everyone to cut power to essentials. Gas-fired plants carried the province. And remember — worldwide, cold kills about nine times as many people as heat. In most of the cold world, staying warm runs on fossil fuels: gas heats roughly half of Canadian homes. 'No fossil fuels' in a minus-thirty winter means no heat.">
   <div class="topbar amber"></div>
   <span class="tag amber">Complication  •  The reliability test, in the North</span>
@@ -408,10 +441,10 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>5 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>6 / 10</span></div>
 </section>
 
-<!-- ============ Slide 6: Asymmetry isotype ============ -->
+<!-- ============ Slide 7: Asymmetry isotype ============ -->
 <section class="slide" data-notes="Now the justice layer. Every wealthy country on Earth got rich by burning coal, then oil, then gas. They are now asking the continent that contributed least to the problem to skip that ladder — using clean-energy technology whose OWN supply chain still runs on fossil fuels. That's not a climate plan. That's an injustice with a green sticker on it.">
   <div class="topbar amber"></div>
   <span class="tag amber">Complication  •  The justice asymmetry</span>
@@ -421,19 +454,19 @@
     <div class="line1">Every wealthy country got rich by burning coal, then oil, then gas.</div>
     <div class="line2">Even the clean-energy supply chain itself — steel, cement, shipping — still runs on fossil fuels today.</div>
   </div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>6 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>7 / 10</span></div>
 </section>
 
-<!-- ============ Slide 7: Bridge — energy & life expectancy ============ -->
+<!-- ============ Slide 8: Bridge — energy & life expectancy ============ -->
 <section class="slide" data-notes="This is the Hans Rosling curve. Below about three thousand kilowatt-hours per person per year, every additional kilowatt-hour translates directly into life-years — through clinics, refrigerated vaccines, lit classrooms, water pumps. Zambia is right on the steep part of that curve. Cutting energy access there costs life-years immediately. That's why the moral arithmetic doesn't end with climate.">
   <div class="topbar amber"></div>
   <span class="tag amber">Bridge  •  What energy access buys</span>
   <h1 class="action small">Below ~3,000 kWh per person per year, every extra kWh<br/>buys life-years. Zambia sits right on the steep part of the curve.</h1>
   <div class="chart" id="chart-energy-life" style="height:56vh;"></div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>7 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>8 / 10</span></div>
 </section>
 
-<!-- ============ Slide 8: Resolution ============ -->
+<!-- ============ Slide 9: Resolution ============ -->
 <section class="slide" data-notes="I'm not arguing fossil fuels forever. I'm arguing for a MANAGED transition. Natural gas as a bridge — emits half what coal does and Africa holds 13% of global reserves, and it's the firm power that carried Alberta and would have spared Zambia. Renewables scaled aggressively on top — solar in Zambia is already the cheapest new capacity. And firm power kept on until storage and grid infrastructure can stand alone. That's how we keep the lights and the heat on while decarbonising.">
   <div class="topbar"></div>
   <span class="tag">Resolution  •  The managed transition</span>
@@ -464,17 +497,17 @@
         Not before. Not as a slogan. As an engineering schedule.</div>
     </div>
   </div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>8 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>9 / 10</span></div>
 </section>
 
-<!-- ============ Slide 9: Sources ============ -->
+<!-- ============ Slide 10: Sources ============ -->
 <section class="slide" data-notes="Reference slide for Q&A. If anyone questions a stat, the source is here. Full URLs in the repo's research/notes.md.">
   <div class="topbar"></div>
   <span class="tag">Appendix  •  Sources</span>
   <h1 class="action small">Every statistic on every slide, with a citation.</h1>
   <p class="muted" style="margin-top:-6px">Full notes preserved in the repo at <span class="bold">research/notes.md</span>.</p>
   <div class="src-grid" id="sources"></div>
-  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>9 / 9</span></div>
+  <div class="footer"><span>Choolwe  •  The Case For Fossil Fuels</span><span>10 / 10</span></div>
 </section>
 
 </div>
@@ -706,10 +739,10 @@ let chartsRendered = {};
 
 function renderChartFor(i){
   if(chartsRendered[i]) return;
-  if(i===3){ renderZambia(); chartsRendered[i]=true; }
-  if(i===4){ renderCold(); chartsRendered[i]=true; }
-  if(i===5){ renderAsymmetry(); chartsRendered[i]=true; }
-  if(i===6){ renderEnergyLife(); chartsRendered[i]=true; }
+  if(i===4){ renderZambia(); chartsRendered[i]=true; }
+  if(i===5){ renderCold(); chartsRendered[i]=true; }
+  if(i===6){ renderAsymmetry(); chartsRendered[i]=true; }
+  if(i===7){ renderEnergyLife(); chartsRendered[i]=true; }
 }
 function go(i){
   i = Math.max(0, Math.min(slides.length-1, i));
@@ -752,7 +785,7 @@ window.addEventListener("keydown", e=>{
 });
 
 // Warm the first chart-bearing slide (Zambia) so it's ready on first navigation.
-renderChartFor(3);
+renderChartFor(4);
 </script>
 </body>
 </html>

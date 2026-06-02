@@ -13,7 +13,7 @@ Narrative spine (Storytelling-with-Data, SCR):
 
 Two-accent palette used thematically:
   BLUE (#1F4E79) = path forward / what's built;  AMBER (#D97706) = cost / stakes.
-9 slides. All citations consolidated on the final Sources slide.
+10 slides (incl. a cold-open hook). All citations consolidated on the final Sources slide.
 """
 from pathlib import Path
 from pptx import Presentation
@@ -43,7 +43,7 @@ prs.slide_width  = Inches(13.333)
 prs.slide_height = Inches(7.5)
 SW, SH = prs.slide_width, prs.slide_height
 BLANK = prs.slide_layouts[6]
-TOTAL = 9
+TOTAL = 10
 
 # =========================================================================
 # Drawing helpers
@@ -219,7 +219,45 @@ set_notes(s,
     "can't guarantee it yet — not in Lusaka, and not in Alberta.")
 
 # =========================================================================
-# Slide 2 — Primer: what are fossil fuels
+# Slide 2 — Cold-open hook (the big idea, framed as the question)
+# =========================================================================
+s = prs.slides.add_slide(BLANK)
+add_rect(s, Inches(0), Inches(0), SW, SH, fill=BLUE)        # full-bleed
+add_rect(s, Inches(0), Inches(0), Inches(0.22), SH, fill=AMBER)  # left accent
+
+add_text(s, Inches(0.9), Inches(1.55), Inches(11.5), Inches(0.5),
+         "THE BIG IDEA  •  THE QUESTION THIS TALK TURNS ON",
+         size=13, bold=True, color=AMBER)
+
+tb = s.shapes.add_textbox(Inches(0.9), Inches(2.35), Inches(11.4), Inches(2.9))
+tf = tb.text_frame; tf.word_wrap = True
+tf.margin_left = tf.margin_right = Emu(0)
+p = tf.paragraphs[0]
+def _hook(p, text, color, bold=True):
+    r = p.add_run(); r.text = text
+    r.font.size = Pt(44); r.font.color.rgb = color; r.font.bold = bold
+    r.font.name = "Calibri"
+_hook(p, "What if cutting fossil fuels ", BG_WHITE)
+_hook(p, "too fast", AMBER)
+_hook(p, " costs ", BG_WHITE)
+_hook(p, "more lives", AMBER)
+_hook(p, " than it saves?", BG_WHITE)
+
+add_text(s, Inches(0.9), Inches(5.45), Inches(10.6), Inches(0.9),
+         "A steelman I have to take seriously — even as someone who wants "
+         "fossil fuels gone.",
+         size=16, color=BLUE_LIGHT)
+
+add_footer(s, 2)
+set_notes(s,
+    "(~15 sec) Before any data, here's the one question this whole talk turns "
+    "on. Yesterday I argued we should cut fossil fuels. But this is the "
+    "steelman I couldn't shake: what if cutting them too fast costs more lives "
+    "than it saves? Hold that question — everything today is my honest attempt "
+    "to answer it.")
+
+# =========================================================================
+# Slide 3 — Primer: what are fossil fuels
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s)
@@ -261,7 +299,7 @@ add_text(s, Inches(0.6), Inches(6.3), Inches(12.1), Inches(0.6),
          "industry (steel, cement, fertilizer) · cooking.",
          size=13, bold=True, color=TEXT_MUTED)
 
-add_footer(s, 2)
+add_footer(s, 3)
 set_notes(s,
     "(~25 sec) Quick grounding before the argument. Fossil fuels are just "
     "stored ancient sunlight — plants and ocean plankton, buried and cooked "
@@ -272,7 +310,7 @@ set_notes(s,
     "built from. Hold that scale in mind for everything that follows.")
 
 # =========================================================================
-# Slide 3 — Big Idea (reliability spine)
+# Slide 4 — Big Idea (reliability spine)
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s)
@@ -301,7 +339,7 @@ add_text(s, Inches(0.9), Inches(4.6), Inches(11.5), Inches(2.0),
 
 icon_balance(s, Inches(12.4), Inches(1.05), r=Inches(0.4))
 
-add_footer(s, 3)
+add_footer(s, 4)
 set_notes(s,
     "(~20 sec) This is what I want you to walk out of the room remembering. "
     "Reliable energy is survival — and the clean-energy-only plan can't "
@@ -310,7 +348,7 @@ set_notes(s,
     "it's a managed transition. Let me show you how I got there.")
 
 # =========================================================================
-# Slide 4 — Complication: reliability test in the South (Zambia)
+# Slide 5 — Complication: reliability test in the South (Zambia)
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=AMBER)
@@ -344,7 +382,7 @@ add_text(s, Inches(0.6), Inches(6.65), Inches(12), Inches(0.4),
          "The answer isn't \"burn more coal.\" It's \"don't bet the grid on one weather pattern.\"",
          size=13, color=TEXT_MUTED)
 
-add_footer(s, 4)
+add_footer(s, 5)
 set_notes(s,
     "(~40 sec) We lived this. We did the 'clean' thing — 85% of our installed "
     "capacity is hydropower. Then the climate broke our climate solution. The "
@@ -354,7 +392,7 @@ set_notes(s,
     "hospitals and empty cold-chains.")
 
 # =========================================================================
-# Slide 5 — Complication: reliability test in the North (Alberta cold snap)
+# Slide 6 — Complication: reliability test in the North (Alberta cold snap)
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=AMBER)
@@ -391,7 +429,7 @@ add_text(s, Inches(0.6), Inches(6.7), Inches(12), Inches(0.4),
          "dark — and only firm power kept it alive.",
          size=13, color=TEXT_MUTED)
 
-add_footer(s, 5)
+add_footer(s, 6)
 set_notes(s,
     "(~45 sec) And it isn't only the poor South. In January 2024, Alberta — a "
     "rich, modern province — hit a minus-forty cold snap. Demand smashed a "
@@ -406,7 +444,7 @@ set_notes(s,
     "winter means no heat.")
 
 # =========================================================================
-# Slide 6 — Complication: justice asymmetry (isotype)
+# Slide 7 — Complication: justice asymmetry (isotype)
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=AMBER)
@@ -430,7 +468,7 @@ add_text(s, Inches(0.95), Inches(6.45), Inches(11.5), Inches(0.4),
          "Even the clean-energy supply chain itself — steel, cement, shipping — still runs on fossil fuels today.",
          size=12, color=TEXT_MUTED)
 
-add_footer(s, 6)
+add_footer(s, 7)
 set_notes(s,
     "(~40 sec) Now the justice layer. Every wealthy country on Earth got rich "
     "by burning coal, then oil, then gas. They are now asking the continent that "
@@ -439,7 +477,7 @@ set_notes(s,
     "a climate plan. That's an injustice with a green sticker on it.")
 
 # =========================================================================
-# Slide 7 — Bridge: energy & life expectancy
+# Slide 8 — Bridge: energy & life expectancy
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=AMBER)
@@ -454,7 +492,7 @@ add_text(s, Inches(0.6), Inches(1.1), Inches(12.1), Inches(1.4),
 s.shapes.add_picture(str(ASSETS / "energy_life.png"),
                      Inches(0.6), Inches(2.8), width=Inches(12.1))
 
-add_footer(s, 7)
+add_footer(s, 8)
 set_notes(s,
     "(~30 sec) This is the Hans Rosling curve. Below about three thousand "
     "kilowatt-hours per person per year, every additional kilowatt-hour "
@@ -464,7 +502,7 @@ set_notes(s,
     "immediately. That's why the moral arithmetic doesn't end with climate.")
 
 # =========================================================================
-# Slide 8 — Resolution
+# Slide 9 — Resolution
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=BLUE)
@@ -527,7 +565,7 @@ for i in range(2):
     arrow.fill.solid(); arrow.fill.fore_color.rgb = GREY_CTX
     arrow.line.fill.background(); arrow.shadow.inherit = False
 
-add_footer(s, 8)
+add_footer(s, 9)
 set_notes(s,
     "(~50 sec) I'm not arguing fossil fuels forever. I'm arguing for a MANAGED "
     "transition. Natural gas as a bridge — emits half what coal does, and it's "
@@ -538,7 +576,7 @@ set_notes(s,
     "lights and the heat on while decarbonising.")
 
 # =========================================================================
-# Slide 9 — Sources
+# Slide 10 — Sources
 # =========================================================================
 s = prs.slides.add_slide(BLANK)
 add_top_bar(s, color=BLUE)
@@ -590,7 +628,7 @@ for i, (claim, src) in enumerate(sources):
              col_w - Inches(0.25), Inches(0.25),
              src, size=10, color=TEXT_MUTED)
 
-add_footer(s, 9)
+add_footer(s, 10)
 set_notes(s,
     "Reference slide for Q&A. If anyone questions a stat, the source is here. "
     "Full URLs are in the repo's research/notes.md.")
